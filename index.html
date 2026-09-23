@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>My Digital Scrapbook</title>
+
+  <style>
+    /* =========================
+       RESET
+    ========================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fffafa;
+      color: #262326;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    :root {
+      --pink: #e9a9ba;
+      --pink-dark: #c97f96;
+      --pink-light: #f8dfe7;
+      --pink-soft: #fff0f4;
+      --white: #ffffff;
+      --cream: #fffafa;
+      --black: #262326;
+      --gray: #777176;
+      --line: #eadfe2;
+    }
+
+    /* =========================
+       LOADING SCREEN
+    ========================= */
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    .loader.hide {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-content {
+      text-align: center;
+    }
+
+    .loader-circle {
+      width: 45px;
+      height: 45px;
+      border: 3px solid #f0dce2;
+      border-top-color: var(--pink-dark);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: auto auto 15px;
+    }
+
+    .loader p {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--gray);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 1000;
+      background: rgba(255, 250, 250, .82);
+      backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(234, 223, 226, .7);
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      color: var(--pink-dark);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: #5e585d;
+      position: relative;
+      transition: .3s;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 1px;
+      background: var(--pink-dark);
+      left: 0;
+      bottom: -6px;
+      transition: .3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--pink-dark);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .menu-btn {
+      display: none;
+      border: none;
+      background: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100vh;
+      padding: 150px 7% 80px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 70px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: var(--pink-soft);
+      top: -150px;
+      right: -100px;
+      z-index: -1;
+    }
+
+    .hero-small {
+      color: var(--pink-dark);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(55px, 8vw, 105px);
+      line-height: .9;
+      letter-spacing: -6px;
+      font-weight: 700;
+      max-width: 800px;
+    }
+
+    .hero h1 span {
+      color: var(--pink-dark);
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-weight: normal;
+    }
+
+    .hero-description {
+      margin-top: 30px;
+      max-width: 480px;
+      color: var(--gray);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 35px;
+    }
+
+    .btn {
+      padding: 14px 23px;
+      border-radius: 30px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: .3s;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--black);
+      color: white;
+      border: 1px solid var(--black);
+    }
+
+    .btn-primary:hover {
+      background: var(--pink-dark);
+      border-color: var(--pink-dark);
+      transform: translateY(-3px);
+    }
+
+    .btn-outline {
+      border: 1px solid #d9cdd1;
+      color: var(--black);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--pink-dark);
+      color: var(--pink-dark);
+      transform: translateY(-3px);
+    }
+
+    /* HERO SCRAPBOOK */
+
+    .hero-visual {
+      position: relative;
+      height: 500px;
+    }
+
+    .photo-main {
+      position: absolute;
+      width: 300px;
+      height: 390px;
+      background: #f5dce3;
+      top: 35px;
+      left: 50%;
+      transform: translateX(-50%) rotate(3deg);
+      box-shadow: 0 25px 50px rgba(70, 40, 50, .12);
+      padding: 14px;
+      transition: .5s ease;
+    }
+
+    .photo-main:hover {
+      transform: translateX(-50%) rotate(0deg) scale(1.03);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b899a2;
+      font-size: 12px;
+      letter-spacing: 2px;
+    }
+
+    .note {
+      position: absolute;
+      background: white;
+      padding: 18px;
+      box-shadow: 0 15px 35px rgba(60, 30, 40, .08);
+      font-family: Georgia, serif;
+      font-style: italic;
+      color: #6c5c63;
+    }
+
+    .note-one {
+      left: 10px;
+      top: 60px;
+      transform: rotate(-7deg);
+    }
+
+    .note-two {
+      right: 0;
+      bottom: 70px;
+      transform: rotate(5deg);
+    }
+
+    .tape {
+      position: absolute;
+      width: 80px;
+      height: 24px;
+      background: rgba(233, 169, 186, .45);
+      transform: rotate(-5deg);
+      top: 20px;
+      left: calc(50% - 40px);
+      z-index: 3;
+    }
+
+    /* =========================
+       GENERAL SECTION
+    ========================= */
+
+    section {
+      padding: 110px 7%;
+    }
+
+    .section-label {
+      color: var(--pink-dark);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      font-size: clamp(35px, 5vw, 65px);
+      letter-spacing: -3px;
+      line-height: 1;
+      margin-bottom: 50px;
+    }
+
+    .section-title span {
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-weight: normal;
+    }
+
+    /* =========================
+       ABOUT
+    ========================= */
+
+    .about {
+      background: #fff;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-text {
+      color: var(--gray);
+      line-height: 1.9;
+      font-size: 15px;
+    }
+
+    .about-text p + p {
+      margin-top: 20px;
+    }
+
+    .about-card {
+      background: var(--pink-soft);
+      padding: 45px;
+      position: relative;
+      transform: rotate(1.5deg);
+    }
+
+    .about-card::before {
+      content: "";
+      position: absolute;
+      width: 65px;
+      height: 20px;
+      background: rgba(233, 169, 186, .45);
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-3deg);
+    }
+
+    .about-card h3 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+
+    .about-card p {
+      color: var(--gray);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* =========================
+       WORKS
+    ========================= */
+
+    .works {
+      background: var(--cream);
+    }
+
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .work-card {
+      background: white;
+      border: 1px solid var(--line);
+      padding: 12px;
+      transition: .4s ease;
+      cursor: pointer;
+    }
+
+    .work-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 45px rgba(60, 30, 40, .08);
+      border-color: #e6b8c5;
+    }
+
+    .work-image {
+      height: 260px;
+      background: var(--pink-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b8959f;
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .work-info {
+      padding: 20px 8px 10px;
+    }
+
+    .work-info small {
+      color: var(--pink-dark);
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .work-info h3 {
+      margin-top: 8px;
+      font-size: 20px;
+    }
+
+    .work-info p {
+      margin-top: 8px;
+      color: var(--gray);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       ACHIEVEMENTS
+    ========================= */
+
+    .achievement-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
+    }
+
+    .achievement {
+      padding: 35px 25px;
+      border-right: 1px solid var(--line);
+      transition: .3s;
+    }
+
+    .achievement:last-child {
+      border-right: none;
+    }
+
+    .achievement:hover {
+      background: var(--pink-soft);
+    }
+
+    .achievement-number {
+      font-family: Georgia, serif;
+      font-size: 45px;
+      color: var(--pink-dark);
+      font-style: italic;
+    }
+
+    .achievement h3 {
+      margin-top: 12px;
+      font-size: 18px;
+    }
+
+    .achievement p {
+      margin-top: 8px;
+      color: var(--gray);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+
+    /* =========================
+       JOURNEY
+    ========================= */
+
+    .journey {
+      background: var(--black);
+      color: white;
+    }
+
+    .journey .section-label {
+      color: #e7aabb;
+    }
+
+    .journey .section-title {
+      color: white;
+    }
+
+    .journey-list {
+      max-width: 900px;
+    }
+
+    .journey-item {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 30px;
+      padding: 30px 0;
+      border-top: 1px solid rgba(255,255,255,.15);
+      transition: .3s;
+    }
+
+    .journey-item:hover {
+      padding-left: 15px;
+    }
+
+    .journey-year {
+      color: #e7aabb;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    .journey-item h3 {
+      font-size: 23px;
+      margin-bottom: 8px;
+    }
+
+    .journey-item p {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 650px;
+    }
+
+    /* =========================
+       MEMORIES
+    ========================= */
+
+    .memories {
+      background: #fff;
+    }
+
+    .memory-grid {
+      display: grid;
+      grid-template-columns: 1.3fr .7fr 1fr;
+      grid-auto-rows: 230px;
+      gap: 15px;
+    }
+
+    .memory {
+      background: var(--pink-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ad8d97;
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: .4s;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .memory:nth-child(1) {
+      grid-row: span 2;
+    }
+
+    .memory:nth-child(4) {
+      grid-column: span 2;
+    }
+
+    .memory:hover {
+      transform: scale(.98);
+      box-shadow: inset 0 0 0 5px white;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: var(--pink-soft);
+      padding: 80px 7% 35px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+    }
+
+    .footer-title {
+      font-size: clamp(40px, 7vw, 85px);
+      letter-spacing: -5px;
+      line-height: .9;
+    }
+
+    .footer-title span {
+      color: var(--pink-dark);
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-weight: normal;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-right p {
+      color: var(--gray);
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .social {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #e2cdd4;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      transition: .3s;
+    }
+
+    .social:hover {
+      background: var(--pink-dark);
+      color: white;
+      border-color: var(--pink-dark);
+      transform: translateY(-4px);
+    }
+
+    .copyright {
+      border-top: 1px solid #e5d4d9;
+      margin-top: 60px;
+      padding-top: 20px;
+      color: #998d92;
+      font-size: 11px;
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 25, .55);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s;
+      z-index: 5000;
+    }
+
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      width: min(600px, 100%);
+      background: white;
+      padding: 35px;
+      transform: translateY(30px) scale(.95);
+      transition: .4s;
+      position: relative;
+    }
+
+    .modal.active .modal-box {
+      transform: translateY(0) scale(1);
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      border: none;
+      background: none;
+      font-size: 25px;
+      cursor: pointer;
+      color: var(--gray);
+    }
+
+    .modal-image {
+      height: 240px;
+      background: var(--pink-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ad8d97;
+      margin-bottom: 25px;
+    }
+
+    .modal-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .modal-box p {
+      color: var(--gray);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* =========================
+       SCROLL ANIMATION
+    ========================= */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: .8s ease;
+    }
+
+    .fade-left.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .fade-right {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: .8s ease;
+    }
+
+    .fade-right.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 850px) {
+
+      nav {
+        padding: 18px 6%;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 70px;
+        left: 6%;
+        right: 6%;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        border: 1px solid var(--line);
+        box-shadow: 0 20px 40px rgba(60,30,40,.08);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: .3s;
+      }
+
+      .nav-links.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .nav-links li {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-links li:last-child {
+        border-bottom: none;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 16px 20px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding-top: 130px;
+      }
+
+      .hero h1 {
+        letter-spacing: -4px;
+      }
+
+      .hero-visual {
+        height: 420px;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .works-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .achievement-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .achievement {
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .achievement:last-child {
+        border-bottom: none;
+      }
+
+      .memory-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 190px;
+      }
+
+      .memory:nth-child(1) {
+        grid-row: span 1;
+      }
+
+      .memory:nth-child(4) {
+        grid-column: span 2;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
+
+      .socials {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 550px) {
+
+      section {
+        padding: 80px 6%;
+      }
+
+      .hero {
+        padding-left: 6%;
+        padding-right: 6%;
+      }
+
+      .hero h1 {
+        font-size: 57px;
+      }
+
+      .hero-description {
+        font-size: 14px;
+      }
+
+      .hero-buttons {
+        flex-wrap: wrap;
+      }
+
+      .photo-main {
+        width: 250px;
+        height: 330px;
+      }
+
+      .note-one {
+        left: 0;
+      }
+
+      .note-two {
+        right: -5px;
+      }
+
+      .works-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .work-image {
+        height: 280px;
+      }
+
+      .journey-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .memory-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .memory:nth-child(4) {
+        grid-column: span 1;
+      }
+
+      .footer-title {
+        letter-spacing: -3px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  <div class="loader" id="loader">
+    <div class="loader-content">
+      <div class="loader-circle"></div>
+      <p>opening my scrapbook...</p>
+    </div>
+  </div>
+
+
+  <!-- =========================
+       NAVBAR
+  ========================== -->
+
+  <nav>
+    <a href="#home" class="logo">
+      my<span>scrapbook.</span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn">
+      ☰
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#works">Works</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#memories">Memories</a></li>
+    </ul>
+  </nav>
+
+
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero" id="home">
+
+    <div class="hero-content fade-left">
+
+      <p class="hero-small">
+        welcome to my little corner
+      </p>
+
+      <h1>
+        My little<br>
+        <span>scrapbook.</span>
+      </h1>
+
+      <p class="hero-description">
+        A small digital collection of my works, memories,
+        achievements, and little pieces of my journey.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#works" class="btn btn-primary">
+          Explore my works
+        </a>
+
+        <a href="#about" class="btn btn-outline">
+          About me
+        </a>
+      </div>
+
+    </div>
+
+
+    <div class="hero-visual fade-right">
+
+      <div class="tape"></div>
+
+      <div class="photo-main">
+        <div class="photo-placeholder">
+          YOUR PHOTO HERE
+        </div>
+      </div>
+
+      <div class="note note-one">
+        little moments ♡
+      </div>
+
+      <div class="note note-two">
+        made with love
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ABOUT
+  ========================== -->
+
+  <section class="about" id="about">
+
+    <div class="section-label reveal">
+      01 — about me
+    </div>
+
+    <h2 class="section-title reveal">
+      A little bit <span>about me.</span>
+    </h2>
+
+    <div class="about-grid">
+
+      <div class="about-text fade-left">
+
+        <p>
+          Hi! I'm someone who loves collecting little
+          memories, creating things, and turning ideas
+          into something that feels like me.
+        </p>
+
+        <p>
+          This website is like my own digital scrapbook —
+          a place where I can keep my projects,
+          achievements, memories, and experiences.
+        </p>
+
+      </div>
+
+
+      <div class="about-card fade-right">
+
+        <h3>
+          “small things matter.”
+        </h3>
+
+        <p>
+          Every project, every memory, and every little
+          achievement has its own story.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       WORKS
+  ========================== -->
+
+  <section class="works" id="works">
+
+    <div class="section-label reveal">
+      02 — selected works
+    </div>
+
+    <h2 class="section-title reveal">
+      Things I've <span>created.</span>
+    </h2>
+
+
+    <div class="works-grid">
+
+      <div class="work-card reveal" data-title="Creative Poster">
+        <div class="work-image">
+          PROJECT IMAGE
+        </div>
+
+        <div class="work-info">
+          <small>01 / DESIGN</small>
+          <h3>Creative Poster</h3>
+          <p>
+            A simple visual project created
+            with my own ideas.
+          </p>
+        </div>
+      </div>
+
+
+      <div class="work-card reveal" data-title="Digital Project">
+        <div class="work-image">
+          PROJECT IMAGE
+        </div>
+
+        <div class="work-info">
+          <small>02 / PROJECT</small>
+          <h3>Digital Project</h3>
+          <p>
+            One of my digital projects that
+            I enjoyed working on.
+          </p>
+        </div>
+      </div>
+
+
+      <div class="work-card reveal" data-title="School Project">
+        <div class="work-image">
+          PROJECT IMAGE
+        </div>
+
+        <div class="work-info">
+          <small>03 / SCHOOL</small>
+          <h3>School Project</h3>
+          <p>
+            A collection of school work
+            and creative assignments.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       ACHIEVEMENTS
+  ========================== -->
+
+  <section>
+
+    <div class="section-label reveal">
+      03 — achievements
+    </div>
+
+    <h2 class="section-title reveal">
+      Little things I'm <span>proud of.</span>
+    </h2>
+
+
+    <div class="achievement-grid reveal">
+
+      <div class="achievement">
+        <div class="achievement-number">01</div>
+        <h3>Creative Competition</h3>
+        <p>
+          A memorable experience from
+          creating something with creativity.
+        </p>
+      </div>
+
+
+      <div class="achievement">
+        <div class="achievement-number">02</div>
+        <h3>School Projects</h3>
+        <p>
+          Different projects that helped me
+          learn and improve.
+        </p>
+      </div>
+
+
+      <div class="achievement">
+        <div class="achievement-number">03</div>
+        <h3>Personal Growth</h3>
+        <p>
+          Learning new things and becoming
+          better little by little.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       JOURNEY
+  ========================== -->
+
+  <section class="journey" id="journey">
+
+    <div class="section-label reveal">
+      04 — my journey
+    </div>
+
+    <h2 class="section-title reveal">
+      A few chapters of <span>my story.</span>
+    </h2>
+
+
+    <div class="journey-list">
+
+      <div class="journey-item reveal">
+        <div class="journey-year">
+          2024
+        </div>
+
+        <div>
+          <h3>A new chapter</h3>
+          <p>
+            Starting new experiences, meeting new people,
+            and discovering more things about myself.
+          </p>
+        </div>
+      </div>
+
+
+      <div class="journey-item reveal">
+        <div class="journey-year">
+          2025
+        </div>
+
+        <div>
+          <h3>Learning & creating</h3>
+          <p>
+            Trying different projects and learning
+            how to turn ideas into something real.
+          </p>
+        </div>
+      </div>
+
+
+      <div class="journey-item reveal">
+        <div class="journey-year">
+          2026
+        </div>
+
+        <div>
+          <h3>Growing up</h3>
+          <p>
+            Becoming more confident, learning from
+            experiences, and creating new memories.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       MEMORIES
+  ========================== -->
+
+  <section class="memories" id="memories">
+
+    <div class="section-label reveal">
+      05 — memories
+    </div>
+
+    <h2 class="section-title reveal">
+      Moments worth <span>keeping.</span>
+    </h2>
+
+
+    <div class="memory-grid">
+
+      <div class="memory reveal">
+        MEMORY 01
+      </div>
+
+      <div class="memory reveal">
+        MEMORY 02
+      </div>
+
+      <div class="memory reveal">
+        MEMORY 03
+      </div>
+
+      <div class="memory reveal">
+        MEMORY 04
+      </div>
+
+      <div class="memory reveal">
+        MEMORY 05
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
+
+  <footer>
+
+    <div class="footer-content">
+
+      <div>
+        <p class="section-label">
+          thanks for visiting
+        </p>
+
+        <h2 class="footer-title">
+          Until the<br>
+          next <span>chapter.</span>
+        </h2>
+      </div>
+
+
+      <div class="footer-right">
+
+        <p>
+          made with ♡ and a little bit of creativity.
+        </p>
+
+        <div class="socials">
+          <a href="#" class="social">IG</a>
+          <a href="#" class="social">TK</a>
+          <a href="#" class="social">✉</a>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+      © 2026 My Digital Scrapbook
+    </div>
+
+  </footer>
+
+
+  <!-- =========================
+       MODAL
+  ========================== -->
+
+  <div class="modal" id="modal">
+
+    <div class="modal-box">
+
+      <button class="close-modal" id="closeModal">
+        ×
+      </button>
+
+      <div class="modal-image">
+        PROJECT PREVIEW
+      </div>
+
+      <h2 id="modalTitle">
+        Project
+      </h2>
+
+      <p>
+        This is a space where you can write a
+        longer description about your project,
+        the process, idea, or experience.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script>
+
+    /* =========================
+       LOADING
+    ========================== */
+
+    window.addEventListener("load", function () {
+
+      const loader = document.getElementById("loader");
+
+      setTimeout(() => {
+        loader.classList.add("hide");
+      }, 700);
+
+    });
+
+
+    /* =========================
+       MOBILE MENU
+    ========================== */
+
+    const menuBtn = document.getElementById("menuBtn");
+    const navLinks = document.getElementById("navLinks");
+
+    menuBtn.addEventListener("click", function () {
+
+      navLinks.classList.toggle("active");
+
+    });
+
+
+    /* CLOSE MOBILE MENU
+       AFTER CLICKING LINK
+    */
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+
+      link.addEventListener("click", function () {
+
+        navLinks.classList.remove("active");
+
+      });
+
+    });
+
+
+    /* =========================
+       SCROLL REVEAL
+    ========================= */
+
+    const revealElements = document.querySelectorAll(
+      ".reveal, .fade-left, .fade-right"
+    );
+
+    const observer = new IntersectionObserver(
+      function(entries) {
+
+        entries.forEach(entry => {
+
+          if (entry.isIntersecting) {
+
+            entry.target.classList.add("show");
+
+            observer.unobserve(entry.target);
+
+          }
+
+        });
+
+      },
+      {
+        threshold: 0.12
+      }
+    );
+
+
+    revealElements.forEach(element => {
+
+      observer.observe(element);
+
+    });
+
+
+    /* =========================
+       PROJECT MODAL
+    ========================= */
+
+    const modal = document.getElementById("modal");
+    const modalTitle = document.getElementById("modalTitle");
+    const closeModal = document.getElementById("closeModal");
+
+    const workCards = document.querySelectorAll(".work-card");
+
+
+    workCards.forEach(card => {
+
+      card.addEventListener("click", function() {
+
+        const title = card.getAttribute("data-title");
+
+        modalTitle.textContent = title;
+
+        modal.classList.add("active");
+
+        document.body.style.overflow = "hidden";
+
+      });
+
+    });
+
+
+    closeModal.addEventListener("click", function() {
+
+      modal.classList.remove("active");
+
+      document.body.style.overflow = "";
+
+    });
+
+
+    modal.addEventListener("click", function(event) {
+
+      if (event.target === modal) {
+
+        modal.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+      }
+
+    });
+
+
+    /* =========================
+       ESC KEY CLOSE MODAL
+    ========================== */
+
+    document.addEventListener("keydown", function(event) {
+
+      if (event.key === "Escape") {
+
+        modal.classList.remove("active");
+
+        document.body.style.overflow = "";
+
+      }
+
+    });
+
+
+    /* =========================
+       BUTTON HOVER MICRO EFFECT
+    ========================== */
+
+    const buttons = document.querySelectorAll(".btn");
+
+    buttons.forEach(button => {
+
+      button.addEventListener("mouseenter", function() {
+
+        button.style.transition = "transform .25s ease";
+
+      });
+
+    });
+
+
+  </script>
+
+</body>
+</html>
